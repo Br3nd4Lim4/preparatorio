@@ -105,32 +105,34 @@ h1{
 /* tabs */
 .tabs{
   display:flex;
-  gap:2px;
+  gap:6px;
   margin-bottom:20px;
-  border-bottom:1.5px solid var(--line);
+  padding:5px;
+  border:1px solid var(--line);
+  border-radius:6px;
+  background:rgba(0,0,0,0.15);
 }
 .tab-btn{
+  flex:1;
   font-family:var(--font-mono);
-  font-size:13px;
-  letter-spacing:0.05em;
+  font-size:14px;
+  letter-spacing:0.03em;
   text-transform:uppercase;
   background:transparent;
   color:var(--paper-dim);
   border:none;
-  padding:12px 18px;
+  border-radius:4px;
+  padding:14px 12px;
   cursor:pointer;
   position:relative;
-  transition:color .15s ease;
+  transition:color .15s ease, background .15s ease;
+  display:flex; align-items:center; justify-content:center; gap:7px;
+  min-height:48px;
 }
-.tab-btn span.n{color:var(--amber); margin-right:6px;}
-.tab-btn:hover{color:var(--paper);}
-.tab-btn.active{color:var(--paper);}
-.tab-btn.active::after{
-  content:"";
-  position:absolute; left:0; right:0; bottom:-1.5px;
-  height:2px;
-  background:var(--amber);
-}
+.tab-btn span.n{color:var(--amber); font-weight:600;}
+.tab-btn:hover{color:var(--paper); background:rgba(255,255,255,0.04);}
+.tab-btn.active{color:var(--ink); background:var(--amber); font-weight:600;}
+.tab-btn.active span.n{color:var(--ink);}
 .panel{display:none;}
 .panel.active{display:block; animation:fadeIn .25s ease;}
 @keyframes fadeIn{from{opacity:0; transform:translateY(4px);}to{opacity:1; transform:translateY(0);}}
@@ -207,6 +209,28 @@ h1{
 }
 .topic p{margin:0; font-size:14px; line-height:1.65; color:var(--paper);}
 
+.resources{display:flex; flex-direction:column; gap:8px; margin-top:10px;}
+.res-row{display:flex; flex-wrap:wrap; gap:8px;}
+.res-chip{
+  flex:1 1 140px;
+  justify-content:center;
+  display:inline-flex; align-items:center; gap:6px;
+  font-family:var(--font-mono); font-size:11px;
+  border:1px solid var(--line); border-radius:4px;
+  padding:7px 10px; text-decoration:none; color:var(--paper);
+  background:rgba(255,255,255,0.02);
+  transition:border-color .15s ease, background .15s ease;
+}
+.res-chip:hover{border-color:var(--paper-dim);}
+.res-chip .ico{flex:0 0 auto; display:flex;}
+.res-chip.video .ico{color:var(--amber);}
+.res-chip.text .ico{color:var(--paper-dim);}
+.res-chip.empty{
+  color:var(--paper-dim); border-style:dashed; cursor:default;
+  background:transparent;
+}
+.res-chip.empty:hover{border-color:var(--line);}
+
 .subject-progress{display:flex; align-items:center; gap:8px;}
 .subject-bar{width:60px; height:5px; background:var(--panel); border-radius:3px; overflow:hidden;}
 .subject-bar-fill{height:100%; background:var(--green); width:0%; transition:width .2s ease;}
@@ -255,6 +279,7 @@ h1{
 
 .checklist{list-style:none; margin:0; padding:0; display:grid; gap:10px;}
 .checklist li{display:flex; gap:10px; align-items:flex-start; font-size:14px; line-height:1.5;}
+.checklist li .txt{flex:1; min-width:0;}
 .checklist li .ico{
   flex:0 0 18px; width:18px; height:18px; margin-top:2px;
   border-radius:50%; background:var(--panel-2);
@@ -302,6 +327,21 @@ h1{
   padding:12px 16px; font-size:13px; line-height:1.6; color:var(--paper-dim); margin-top:16px;
 }
 .edital-note b{color:var(--paper);}
+
+/* subject picker (exercícios) */
+.subj-pills{display:flex; flex-wrap:wrap; gap:10px; margin-top:6px;}
+.subj-pill{
+  display:flex; align-items:center; gap:9px;
+  border:1.5px solid var(--line); border-radius:5px;
+  background:transparent; color:var(--paper);
+  padding:12px 16px; cursor:pointer; font-size:14px; font-family:var(--font-body);
+  min-height:48px;
+  transition:border-color .15s ease, background .15s ease;
+}
+.subj-pill:hover{border-color:var(--paper-dim);}
+.subj-pill.selected{border-color:var(--amber); background:rgba(255,182,39,0.08);}
+.subj-pill.selected .subject-tag{background:var(--amber);}
+.subj-pill .count{margin-left:auto; font-family:var(--font-mono); font-size:11px; color:var(--paper-dim);}
 .quiz-toolbar{
   display:flex; align-items:center; justify-content:space-between;
   gap:12px; flex-wrap:wrap;
@@ -423,8 +463,9 @@ h1{
 
   .specs{grid-template-columns:repeat(2,1fr);}
 
-  .tabs{overflow-x:auto; -webkit-overflow-scrolling:touch;}
-  .tab-btn{padding:12px 14px; font-size:12px; white-space:nowrap;}
+  .tabs{padding:4px; gap:4px;}
+  .tab-btn{padding:12px 6px; font-size:11px; white-space:normal; line-height:1.25; min-height:52px; flex-direction:column; gap:3px;}
+  .tab-btn span.n{display:none;}
 
   .subject-head{padding:14px;}
   .subject-name{font-size:15.5px;}
@@ -484,8 +525,9 @@ h1{
 
   <div class="tabs">
     <button class="tab-btn active" data-tab="conteudo"><span class="n">01</span>Guia de Conteúdos</button>
-    <button class="tab-btn" data-tab="simulado"><span class="n">02</span>Simulado</button>
-    <button class="tab-btn" data-tab="orientacoes"><span class="n">03</span>Orientações</button>
+    <button class="tab-btn" data-tab="exercicios"><span class="n">02</span>Exercícios</button>
+    <button class="tab-btn" data-tab="simulado"><span class="n">03</span>Simulado</button>
+    <button class="tab-btn" data-tab="orientacoes"><span class="n">04</span>Orientações</button>
   </div>
 
   <!-- CONTEUDO -->
@@ -498,12 +540,41 @@ h1{
     <div id="guide-list"></div>
   </div>
 
+  <!-- EXERCICIOS -->
+  <div class="panel" id="panel-exercicios">
+    <div id="ex-picker">
+      <div class="info-card">
+        <h3><span class="subject-tag">📝</span>Exercícios por matéria</h3>
+        <p class="desc">Escolha uma ou mais matérias abaixo. Você recebe 10 questões de cada matéria selecionada, com tópicos parecidos aos do simulado. A ordem das perguntas e das alternativas muda a cada tentativa.</p>
+        <div class="subj-pills" id="subj-pills"></div>
+        <div class="q-actions" style="justify-content:flex-start; margin-top:18px;">
+          <button class="btn btn-primary" id="start-ex" disabled>Começar exercícios →</button>
+        </div>
+      </div>
+    </div>
+    <div id="ex-body" style="display:none;">
+      <div class="quiz-toolbar">
+        <div class="progress-wrap">
+          <div class="progress-label"><span id="ex-prog-text">0 / 0 respondidas</span><span id="ex-prog-pct">0%</span></div>
+          <div class="progress-bar"><div class="progress-fill" id="ex-prog-fill"></div></div>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <button class="btn" onclick="exEngine.back()">← Trocar matérias</button>
+          <button class="btn" id="ex-finish-btn">Finalizar e ver resultado</button>
+        </div>
+      </div>
+      <div class="nav-grid" id="ex-nav-grid"></div>
+      <div class="q-card" id="ex-q-card"></div>
+    </div>
+    <div id="ex-results" style="display:none;"></div>
+  </div>
+
   <!-- SIMULADO -->
   <div class="panel" id="panel-simulado">
     <div id="quiz-intro">
       <div class="q-card">
         <p class="q-text">O simulado tem 28 questões originais, escritas para treinar os mesmos tópicos do programa oficial do IFSC, na mesma proporção da prova real: 7 de Ciências, 7 de Geografia e História, 7 de Língua Portuguesa e 7 de Matemática.</p>
-        <p style="font-size:13.5px; color:var(--paper-dim); line-height:1.6;">Você pode responder na ordem que quiser usando o mapa de questões. Ao confirmar uma resposta, a explicação da questão aparece na hora. No final, veja seu desempenho por área.</p>
+        <p style="font-size:13.5px; color:var(--paper-dim); line-height:1.6;">Você pode responder na ordem que quiser usando o mapa de questões. Ao confirmar uma resposta, a explicação da questão aparece na hora. A ordem das perguntas e das alternativas muda a cada nova tentativa. No final, veja seu desempenho por área.</p>
         <div class="q-actions" style="justify-content:flex-start;">
           <button class="btn btn-primary" id="start-quiz">Começar simulado →</button>
         </div>
@@ -545,10 +616,10 @@ h1{
     <div class="info-card">
       <h3><span class="subject-tag">🎒</span>O que levar no dia da prova</h3>
       <ul class="checklist">
-        <li><span class="ico"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8L6.5 11.5L13 4.5" stroke="var(--paper)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Documento oficial de identificação com foto e original (Exemplo: RG. OBS:cópia não é aceita).</li>
-        <li><span class="ico"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8L6.5 11.5L13 4.5" stroke="var(--paper)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Caneta esferográfica de corpo transparente, com tinta preta ou azul.</li>
-        <li><span class="ico"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8L6.5 11.5L13 4.5" stroke="var(--paper)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>O comprovante de inscrição (bom ter à mão, mesmo não sendo item obrigatório de entrada).</li>
-        <li class="warn"><span class="ico"><svg viewBox="0 0 16 16" fill="none"><path d="M4 4L12 12M12 4L4 12" stroke="var(--paper)" stroke-width="2" stroke-linecap="round"/></svg></span><b>Não é permitido calculadora, relógio, boné, óculos escuros, celular, smartphone, tablet ou qualquer recurso eletrônico — devem ficar desligados e guardados.</li>
+        <li><span class="ico"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8L6.5 11.5L13 4.5" stroke="var(--paper)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="txt">Documento oficial de identificação <b>com foto</b> e <b>original</b> (RG/CIN, CNH, carteira de trabalho, carteiras profissionais, passaporte ou RNE/CRNM — cópia não é aceita).</span></li>
+        <li><span class="ico"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8L6.5 11.5L13 4.5" stroke="var(--paper)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="txt">Caneta esferográfica de <b>corpo transparente</b>, com tinta preta ou azul.</span></li>
+        <li><span class="ico"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8L6.5 11.5L13 4.5" stroke="var(--paper)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="txt">O comprovante de inscrição (bom ter à mão, mesmo não sendo item obrigatório de entrada).</span></li>
+        <li class="warn"><span class="ico"><svg viewBox="0 0 16 16" fill="none"><path d="M4 4L12 12M12 4L4 12" stroke="var(--paper)" stroke-width="2" stroke-linecap="round"/></svg></span><span class="txt"><b>Não é permitido</b>: calculadora, relógio, boné, óculos escuros, celular, smartphone, tablet ou qualquer recurso eletrônico — devem ficar desligados e guardados.</span></li>
       </ul>
     </div>
 
@@ -559,10 +630,10 @@ h1{
         <div class="fact"><b>13h45</b><span>Fechamento dos portões</span></div>
         <div class="fact"><b>14h00</b><span>Início da prova</span></div>
         <div class="fact"><b>4h</b><span>Duração total</span></div>
-        <div class="fact"><b>1h30</b><span>Tempo mínimo p/ sair</span></div>
-        <div class="fact"><b>28</b><span>Quantidade de questões</span></div>
+        <div class="fact"><b>1h30</b><span>Tempo mínimo para sair da sala de prova</span></div>
+        <div class="fact"><b>SIM</b><span>Posso levar lanche e ir ao banheiro durante a prova?</span></div>
       </div>
-      <p class="desc" style="margin-top:12px;">Quem chegar depois do fechamento dos portões não faz a prova, independente do motivo. A prova tem 28 questões de múltipla escolha (A–E) sobre conteúdos do ensino fundamental (7 de Ciências, 7 de Geografia/História, 7 de Português e 7 de Matemática. Não há redação), e o candidato pode levar o caderno de prova embora ao sair.</p>
+      <p class="desc" style="margin-top:12px;">Quem chegar depois do fechamento dos portões não faz a prova, independente do motivo. A prova tem 28 questões de múltipla escolha (A–E) sobre conteúdos do ensino fundamental, e o candidato pode levar o caderno de prova embora ao sair.</p>
     </div>
 
     <div class="info-card">
@@ -669,6 +740,47 @@ const guide = [
 
 const iconSvg = `<svg class="chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 const checkSvg = `<svg viewBox="0 0 16 16" fill="none"><path d="M3 8L6.5 11.5L13 4.5" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const playIco = `<svg class="ico" width="11" height="11" viewBox="0 0 16 16" fill="currentColor"><path d="M4 2.5v11l10-5.5-10-5.5z"/></svg>`;
+const textIco = `<svg class="ico" width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M4 2h6l3 3v9a1 1 0 01-1 1H4a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.3"/><path d="M6 8h4M6 10.5h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>`;
+
+/* Links pesquisados e verificados para alguns tópicos; os demais ficam como
+   caixinhas vazias — é só colar a URL entre as aspas ("" -> "https://..."). */
+const topicResources = {
+  "lp-1": { videos: ["https://www.youtube.com/watch?v=Ucjv4LT8CSg", "https://www.youtube.com/watch?v=NuMX0fm3V3I"], texts: ["https://www.todamateria.com.br/generos-textuais/", "https://www.portugues.com.br/redacao/generostextuais.html"] },
+  "lp-2": { videos: ["https://www.youtube.com/watch?v=YYrUT5KBgq0", "https://www.youtube.com/watch?v=k0sM0Ovooo8"], texts: ["https://www.todamateria.com.br/variacoes-linguisticas/", "https://brasilescola.uol.com.br/gramatica/variacoes-linguisticas.htm"] },
+  "lp-3": { videos: ["https://www.youtube.com/watch?v=B0EgJVneeGE", "https://www.youtube.com/watch?v=4ZJnTqTk4_Y"], texts: ["https://www.todamateria.com.br/regencia-verbal/", "https://descomplica.com.br/blog/resumo-concordancia-nominal/"] },
+  "lp-4": { videos: ["https://www.youtube.com/watch?v=EFRxOplNSp8", "https://www.youtube.com/watch?v=8PCHXV3iHuQ"], texts: ["https://www.todamateria.com.br/figuras-de-linguagem/", "https://www.infoescola.com/portugues/figuras-de-linguagem/"] },
+  "lp-5": { videos: ["https://www.youtube.com/watch?v=IIU6i3UXyi0", "https://www.youtube.com/watch?v=cHcFDNkxpmQ"], texts: ["https://www.todamateria.com.br/interpretacao-de-texto/", "https://brasilescola.uol.com.br/redacao/interpretacao-textos.htm"] },
+  "lp-6": { videos: ["https://www.youtube.com/watch?v=OWkrebsp8Ng", "https://www.youtube.com/watch?v=Aqh32VzKvqo"], texts: ["https://www.icom.app/preconceito-linguistico-causas-impactos-e-como-combater/", "https://www.todamateria.com.br/preconceito-linguistico/"] },
+  "mat-1": { videos: ["https://www.youtube.com/watch?v=s5Xv1SIQnQE", "https://www.youtube.com/watch?v=Y_mYgLkuEl4&list=PLTPg64KdGgYhAmCsPaU0-D27LCuv1Nge0"], texts: ["https://www.todamateria.com.br/conjuntos-numericos/", "https://brasilescola.uol.com.br/o-que-e/matematica/o-que-sao-conjuntos-numericos.htm"] },
+  "mat-2": { videos: ["https://www.youtube.com/watch?v=i7MZpiRht2E", "https://www.youtube.com/watch?v=8NNA-8rimNs&t=14s"], texts: ["https://www.todamateria.com.br/algebra/", "https://brasilescola.uol.com.br/matematica/algebra.htm"] },
+  "mat-3": { videos: ["https://www.youtube.com/watch?v=th5k6bzSDTA", "https://www.youtube.com/watch?v=0CnUdzmpO8E&list=PLTPg64KdGgYhy8stGM4z2_Hzb3zTfA77Z"], texts: ["https://www.todamateria.com.br/geometria-plana/", "https://brasilescola.uol.com.br/matematica/geometria-plana.htm"] },
+  "mat-4": { videos: ["https://www.youtube.com/watch?v=iNCkGogNtKI", "https://www.youtube.com/watch?v=IgoKxQK5hGQ"], texts: ["https://www.todamateria.com.br/estatistica/", "https://brasilescola.uol.com.br/matematica/probabilidade.htm"] },
+  "gh-1": { videos: ["https://www.youtube.com/watch?v=x0B7Wv6bCfU", "https://www.youtube.com/watch?v=y_AuxOwu9iM"], texts: ["https://www.todamateria.com.br/cartografia/", "https://brasilescola.uol.com.br/historiag/conceito-historia.htm"] },
+  "gh-2": { videos: ["https://www.youtube.com/watch?v=wDqxAtqnuiM", "https://www.youtube.com/watch?v=3eRYXtiXOR0"], texts: ["https://www.todamateria.com.br/guerra-do-contestado/", "https://brasilescola.uol.com.br/historiab/guerra-contestado.htm"] },
+  "gh-3": { videos: ["https://www.youtube.com/watch?v=JY2De5SLvIk", "https://www.youtube.com/watch?v=csab95xL2es"], texts: ["https://www.todamateria.com.br/historia-do-brasil/", "https://brasilescola.uol.com.br/historiab/"] },
+  "gh-4": { videos: ["https://www.youtube.com/watch?v=bF_KhH7MGdo", "https://www.youtube.com/watch?v=d7BeCopGqP4"], texts: ["https://www.todamateria.com.br/globalizacao/", "https://brasilescola.uol.com.br/geografia/globalizacao.htm"] },
+  "gh-5": { videos: ["https://www.youtube.com/watch?v=MmAoXdiwfWQ&list=PLMra4G0-Z7pP8IJF860WeqGYlehWcyTiM", "https://www.youtube.com/watch?v=aVQ_1srdzK4"], texts: ["https://www.todamateria.com.br/historia-geral/", "https://brasilescola.uol.com.br/historiag/"] },
+  "ci-1": { videos: ["https://www.youtube.com/watch?v=lNqTLJo38aA", "https://www.youtube.com/watch?v=5-fa4IKp5bU&t=558s"], texts: ["https://www.todamateria.com.br/materia-e-energia/", "https://brasilescola.uol.com.br/quimica/materia.htm"] },
+  "ci-2": { videos: ["https://www.youtube.com/watch?v=yaiEgmOboq0&list=PLXXIkklJqmKlg9XsaLbc-BrXpkw-T5ZAs", "https://www.youtube.com/watch?v=EN8srOjtQpw"], texts: ["https://www.todamateria.com.br/biologia/", "https://brasilescola.uol.com.br/biologia/"] },
+  "ci-3": { videos: ["https://www.youtube.com/watch?v=3bE0NZVRwNo", "https://www.youtube.com/watch?v=_9zHxsY8-DQ"], texts: ["https://www.todamateria.com.br/sistema-solar/", "https://brasilescola.uol.com.br/geografia/sistema-solar.htm"] },
+};
+function renderResources(topicId){
+  const r = topicResources[topicId] || { videos:["",""], texts:["",""] };
+  const chip = (url, ico, label, kind) => url
+    ? `<a class="res-chip ${kind}" href="${url}" target="_blank" rel="noopener">${ico}${label}</a>`
+    : `<span class="res-chip empty">${ico}${label}</span>`;
+  return `<div class="resources">
+    <div class="res-row">
+      ${chip(r.videos[0], playIco, 'Vídeo 1', 'video')}
+      ${chip(r.videos[1], playIco, 'Vídeo 2', 'video')}
+    </div>
+    <div class="res-row">
+      ${chip(r.texts[0], textIco, 'Leitura 1', 'text')}
+      ${chip(r.texts[1], textIco, 'Leitura 2', 'text')}
+    </div>
+  </div>`;
+}
 
 const STORAGE_KEY = 'ifsc-prancheta-progresso';
 function loadProgress(){
@@ -717,7 +829,7 @@ function renderGuide(){
           ${s.topics.map(t => `
             <div class="topic ${progress[t.id] ? 'done' : ''}" id="topic-${t.id}">
               <button class="topic-check" onclick="event.stopPropagation(); toggleTopic('${t.id}', ${i})">${checkSvg}</button>
-              <div class="topic-text"><h4>${t.h}</h4><p>${t.p}</p></div>
+              <div class="topic-text"><h4>${t.h}</h4><p>${t.p}</p>${renderResources(t.id)}</div>
             </div>
           `).join('')}
         </div>
@@ -768,7 +880,7 @@ function toggleSubject(i){
 }
 
 /* ---------------- QUIZ DATA ---------------- */
-const questions = [
+const simuladoBank = [
 // LÍNGUA PORTUGUESA (7)
 {subj:"LP", q:"Em “Embora estivesse cansado, o técnico terminou o reparo antes do prazo”, a oração destacada estabelece com a principal uma relação de:",
  opts:["Causa","Concessão","Condição","Consequência","Finalidade"], correct:1,
@@ -862,153 +974,357 @@ const questions = [
  exp:"As vacinas expõem o sistema imunológico a uma versão inofensiva (ou parte) do agente infeccioso, treinando o corpo a produzir defesa rápida caso haja exposição real no futuro."},
 ];
 
+/* ---------------- EXERCISE BANK (10 por matéria) ---------------- */
+const exerciseBank = {
+LP: [
+{subj:"LP", q:"Uma bula de remédio tem como principal finalidade:",
+ opts:["Convencer o leitor a comprar o medicamento","Informar sobre o uso correto, riscos e efeitos do medicamento","Narrar a história da descoberta do princípio ativo","Divertir o leitor com uma linguagem descontraída","Expressar os sentimentos de quem escreveu o texto"], correct:1,
+ exp:"A bula é um gênero informativo/instrucional: seu objetivo central é orientar o uso seguro do medicamento, indicações, contraindicações e riscos."},
+{subj:"LP", q:"Assinale a alternativa com concordância nominal de acordo com a norma-padrão.",
+ opts:["Seguem anexo os documentos solicitados.","As crianças ficaram meia assustadas com o barulho.","É proibido entrada de visitantes após as 22h.","Ela mesma resolveu o problema sozinha.","Bastante alunos faltaram à aula hoje."], correct:3,
+ exp:"“Ela mesma” concorda corretamente em gênero com o sujeito feminino. Nas demais, haveria erro: “anexos”, “meio assustadas”, “proibida a entrada” e “Bastantes alunos” (ou “muitos”)."},
+{subj:"LP", q:"“Amanhã iremos ___ uma palestra sobre sustentabilidade.” A regência correta do verbo “assistir”, no sentido de “ver”, exige a preposição:",
+ opts:["Nenhuma preposição é necessária","Para","Com","A","De"], correct:3,
+ exp:"No sentido de “ver, presenciar”, o verbo “assistir” é transitivo indireto e pede a preposição “a”: assistir a uma palestra."},
+{subj:"LP", q:"Em “O relatório foi entregue pelo estagiário”, a oração está na:",
+ opts:["Voz ativa","Voz passiva analítica","Voz passiva sintética","Voz reflexiva","Voz recíproca"], correct:1,
+ exp:"Há o verbo auxiliar “foi” + particípio (“entregue”) e o agente da passiva (“pelo estagiário”), características da voz passiva analítica."},
+{subj:"LP", q:"“O vento sussurrava segredos ao ouvido das árvores.” Essa frase é um exemplo da figura de linguagem chamada:",
+ opts:["Metonímia","Personificação (prosopopeia)","Eufemismo","Antítese","Hipérbole"], correct:1,
+ exp:"Atribuir uma ação humana (sussurrar) a um elemento da natureza (o vento) é personificação, também chamada prosopopeia."},
+{subj:"LP", q:"Qual das frases a seguir apresenta ambiguidade (mais de uma interpretação possível)?",
+ opts:["O professor corrigiu as provas dos alunos ontem à noite.","Comprei um caderno novo para a aula de matemática.","O menino viu o cachorro correndo pela rua com seu pai.","A biblioteca abre às oito horas da manhã.","Ela terminou o trabalho antes do prazo final."], correct:2,
+ exp:"Não fica claro se é o menino ou o cachorro que está com o pai, o que gera duplo sentido — um problema clássico de ambiguidade por má colocação de termos."},
+{subj:"LP", q:"“Estudei bastante para a prova; todavia, fiquei nervoso na hora.” O conectivo “todavia” expressa uma relação de:",
+ opts:["Causa","Adição","Oposição/contraste","Conclusão","Finalidade"], correct:2,
+ exp:"“Todavia” é conjunção adversativa, equivalente a “porém”, “mas” — indica contraste entre o esforço nos estudos e o nervosismo na prova."},
+{subj:"LP", q:"O debate sobre “preconceito linguístico” discute principalmente:",
+ opts:["A existência de uma única forma correta de falar português","A desvalorização social de variedades linguísticas associadas a grupos populares ou regionais","A obrigatoriedade do uso da norma-padrão em qualquer situação de fala","A inexistência de regras gramaticais na língua falada","A superioridade do português europeu sobre o brasileiro"], correct:1,
+ exp:"O preconceito linguístico ocorre quando variedades da língua (rurais, populares, regionais) são julgadas como “erradas” ou inferiores, mesmo sendo plenamente funcionais e regidas por regras próprias."},
+{subj:"LP", q:"Na palavra “chuva”, o dígrafo “ch” representa:",
+ opts:["Dois fonemas e duas letras","Um fonema e uma letra","Um fonema e duas letras","Dois fonemas e uma letra","Nenhum fonema, apenas grafia decorativa"], correct:2,
+ exp:"Dígrafos são encontros de duas letras que representam um único som (fonema): “ch” em “chuva” soa como /ʃ/, um só fonema grafado com duas letras."},
+{subj:"LP", q:"“As enchentes castigaram a cidade. Consequentemente, muitas famílias perderam suas casas.” O termo destacado estabelece coesão por meio de relação de:",
+ opts:["Comparação","Concessão","Consequência/efeito","Alternância","Finalidade"], correct:2,
+ exp:"“Consequentemente” liga o efeito (perda das casas) à causa apresentada antes (as enchentes), reforçando a coerência textual por relação de causa e efeito."},
+],
+MAT: [
+{subj:"MAT", q:"O MMC entre 8 e 12 é:",
+ opts:["16","20","24","36","48"], correct:2,
+ exp:"8 = 2³ e 12 = 2²·3. O MMC usa os fatores com maior expoente: 2³·3 = 24."},
+{subj:"MAT", q:"O número 0,000047, escrito em notação científica, é:",
+ opts:["4,7 × 10⁻⁵","4,7 × 10⁵","47 × 10⁻⁶","4,7 × 10⁻⁴","0,47 × 10⁻⁴"], correct:0,
+ exp:"Deslocando a vírgula 5 casas para a direita a partir de 4,7 chega-se a 0,000047, por isso o expoente é −5: 4,7 × 10⁻⁵."},
+{subj:"MAT", q:"5 operários constroem um muro em 12 dias. Trabalhando no mesmo ritmo, quantos dias 3 operários levariam para construir o mesmo muro?",
+ opts:["7,2 dias","10 dias","15 dias","20 dias","36 dias"], correct:3,
+ exp:"Grandezas inversamente proporcionais: 5×12 = 3×x → x = 60/3 = 20 dias."},
+{subj:"MAT", q:"Desenvolvendo o produto notável (x + 3)², obtém-se:",
+ opts:["x² + 9","x² + 3x + 9","x² + 6x + 9","x² + 9x + 6","2x + 6"], correct:2,
+ exp:"(x+3)² = x² + 2·x·3 + 3² = x² + 6x + 9, aplicando o quadrado da soma."},
+{subj:"MAT", q:"A fatoração de 4x² − 9 é:",
+ opts:["(2x − 3)(2x + 3)","(4x − 9)(x + 1)","(2x − 9)(2x + 1)","(x − 3)(4x + 3)","(2x − 3)²"], correct:0,
+ exp:"É uma diferença de quadrados: 4x² − 9 = (2x)² − 3² = (2x − 3)(2x + 3)."},
+{subj:"MAT", q:"Resolvendo o sistema x + y = 10 e x − y = 2, os valores de x e y são:",
+ opts:["x=8, y=2","x=6, y=4","x=5, y=5","x=4, y=6","x=7, y=3"], correct:1,
+ exp:"Somando as duas equações: 2x = 12 → x = 6. Substituindo em x+y=10: y = 4."},
+{subj:"MAT", q:"Um círculo tem raio de 5 cm. Usando π ≈ 3,14, sua área é aproximadamente:",
+ opts:["15,7 cm²","31,4 cm²","62,8 cm²","78,5 cm²","157 cm²"], correct:3,
+ exp:"Área do círculo = π·r² = 3,14 × 5² = 3,14 × 25 = 78,5 cm²."},
+{subj:"MAT", q:"O volume de um cubo com 4 cm de aresta é:",
+ opts:["12 cm³","16 cm³","48 cm³","64 cm³","96 cm³"], correct:3,
+ exp:"Volume do cubo = aresta³ = 4³ = 64 cm³."},
+{subj:"MAT", q:"Em uma turma, as notas de 5 alunos em uma prova foram: 6, 7, 8, 7 e 7. A média aritmética das notas é:",
+ opts:["6,8","7,0","7,2","7,4","8,0"], correct:1,
+ exp:"Soma das notas: 6+7+8+7+7 = 35. Média = 35 ÷ 5 = 7,0."},
+{subj:"MAT", q:"Ao lançar um dado comum (6 faces, numeradas de 1 a 6), a probabilidade de sair um número par é:",
+ opts:["1/6","1/3","1/2","2/3","5/6"], correct:2,
+ exp:"Números pares possíveis: 2, 4 e 6 — três casos favoráveis em seis possíveis: 3/6 = 1/2."},
+],
+GH: [
+{subj:"GH", q:"Em um mapa, a legenda tem a função de:",
+ opts:["Indicar a data de publicação do mapa","Explicar o significado dos símbolos e cores utilizados no mapa","Mostrar apenas os rios e mares representados","Definir o fuso horário da área mapeada","Substituir a necessidade de uma escala"], correct:1,
+ exp:"A legenda é o “dicionário visual” do mapa: explica o que cada símbolo, cor ou padrão gráfico representa."},
+{subj:"GH", q:"A Grande Florianópolis, uma das regiões de Santa Catarina, é marcada especialmente por:",
+ opts:["Ser a maior região produtora de carvão mineral do estado","Concentrar a capital do estado e ter forte atividade ligada a serviços, turismo e tecnologia","Ser a região com menor densidade populacional de SC","Ter sua economia baseada exclusivamente na pecuária","Não possuir nenhuma influência da colonização açoriana"], correct:1,
+ exp:"A Grande Florianópolis abriga a capital catarinense e se destaca por serviços públicos, turismo, tecnologia (polo de inovação) e forte herança açoriana."},
+{subj:"GH", q:"Entre as principais características da Era Vargas (1930–1945) no Brasil está:",
+ opts:["A privatização total das indústrias estatais","A criação da CLT (Consolidação das Leis do Trabalho) e o incentivo à industrialização","O fim completo da migração interna no país","A adoção do parlamentarismo como sistema de governo","A abolição da escravidão"], correct:1,
+ exp:"O governo Vargas criou a CLT, regulamentando direitos trabalhistas, e impulsionou a industrialização nacional, marcas centrais do período."},
+{subj:"GH", q:"A chamada “uberização” do trabalho, tema atual da geografia do trabalho, refere-se a:",
+ opts:["Ao aumento de empregos com carteira assinada e estabilidade","À expansão de vínculos informais mediados por aplicativos, sem os direitos trabalhistas tradicionais","À proibição do uso de aplicativos de transporte","À redução da jornada de trabalho para 30 horas semanais em todo o mundo","Ao fim do trabalho assalariado"], correct:1,
+ exp:"A “uberização” descreve a expansão de trabalhos intermediados por plataformas digitais, geralmente sem os direitos e proteções do emprego formal tradicional."},
+{subj:"GH", q:"Entre os principais ideais do Iluminismo (séc. XVIII) estava:",
+ opts:["A defesa do poder absoluto dos reis por direito divino","A valorização da razão, da ciência e da crítica às estruturas autoritárias do Antigo Regime","O fortalecimento da censura religiosa sobre a ciência","A defesa da manutenção da servidão feudal","A rejeição de qualquer forma de governo representativo"], correct:1,
+ exp:"O Iluminismo defendia o uso da razão e do conhecimento científico como caminho para questionar privilégios e o poder absoluto, influenciando revoluções posteriores."},
+{subj:"GH", q:"As independências das colônias americanas, entre os séculos XVIII e XIX, foram fortemente influenciadas por:",
+ opts:["O apoio direto e permanente das metrópoles europeias","Os ideais iluministas e o exemplo das revoluções americana e francesa","O desejo de retorno ao sistema colonial","A ausência total de conflitos internos","A imposição de fronteiras pela ONU"], correct:1,
+ exp:"Os movimentos de independência americanos beberam nos ideais iluministas e nos exemplos da Revolução Americana (1776) e da Revolução Francesa (1789)."},
+{subj:"GH", q:"Uma das principais causas da Revolução Francesa (1789) foi:",
+ opts:["A insatisfação popular com os privilégios do clero e da nobreza em contraste com a miséria do terceiro estado","O excesso de participação popular no governo","A abundância de alimentos disponíveis à população","A ausência de impostos sobre a burguesia","O fortalecimento do poder do Parlamento inglês na França"], correct:0,
+ exp:"A desigualdade social e os privilégios de clero e nobreza, somados à crise econômica que atingia o terceiro estado, foram estopins centrais da Revolução Francesa."},
+{subj:"GH", q:"Um regime totalitário, como os que surgiram na Europa entre as décadas de 1920 e 1940, caracteriza-se principalmente por:",
+ opts:["Ampla liberdade de imprensa e pluripartidarismo","Controle absoluto do Estado sobre a vida política, social e cultural, com repressão a opositores","Descentralização total do poder político","Eleições livres e alternância constante de governo","Respeito irrestrito aos direitos individuais"], correct:1,
+ exp:"Regimes totalitários (como o nazismo e o fascismo) concentravam poder no Estado, controlavam a vida social e cultural e reprimiam duramente qualquer oposição."},
+{subj:"GH", q:"O processo de descolonização afro-asiática, intensificado após a Segunda Guerra Mundial, resultou principalmente em:",
+ opts:["No retorno das colônias ao domínio das antigas metrópoles europeias","Na criação de diversos novos Estados independentes na África e na Ásia","No fim de qualquer conflito nesses territórios","Na unificação de toda a África em um único país","No desaparecimento da ONU"], correct:1,
+ exp:"Após 1945, enfraquecidas e pressionadas por movimentos nacionalistas, as potências europeias perderam o controle de suas colônias, dando origem a diversos países independentes na África e na Ásia."},
+{subj:"GH", q:"Antes da chegada dos colonizadores europeus, o atual território de Santa Catarina já era habitado por:",
+ opts:["Populações vindas exclusivamente da Europa","Povos indígenas, como os Guarani e os Kaingang, entre outros grupos originários","Apenas colonos açorianos","Populações vindas da América do Norte","Nenhum grupo humano, sendo um território totalmente desabitado"], correct:1,
+ exp:"O território catarinense já era habitado por povos originários — como Guarani e Kaingang, entre outros — muito antes da chegada dos colonizadores europeus."},
+],
+CI: [
+{subj:"CI", q:"O modelo atômico proposto por Rutherford, a partir de seu experimento com folha de ouro, contribuiu principalmente para:",
+ opts:["Provar que o átomo é indivisível","Demonstrar a existência de um núcleo pequeno, denso e positivo no átomo","Descobrir o elétron pela primeira vez","Provar que os átomos não têm massa","Eliminar a ideia de núcleo atômico"], correct:1,
+ exp:"O experimento de Rutherford mostrou que a maior parte do átomo é espaço vazio, com um núcleo pequeno, denso e de carga positiva concentrando quase toda a massa."},
+{subj:"CI", q:"A água do mar é um exemplo de:",
+ opts:["Substância simples","Substância composta","Mistura homogênea","Mistura heterogênea","Elemento químico puro"], correct:2,
+ exp:"A água do mar é uma mistura homogênea: água, sais minerais e outras substâncias dissolvidas formam uma única fase visível a olho nu."},
+{subj:"CI", q:"A queima de uma vela é um exemplo de reação química do tipo:",
+ opts:["Fotossíntese","Combustão","Fermentação","Oxidação lenta","Fusão nuclear"], correct:1,
+ exp:"A queima envolve reação entre um combustível (a parafina) e o oxigênio do ar, liberando calor e luz — processo típico de combustão."},
+{subj:"CI", q:"Em uma cadeia alimentar, os organismos capazes de produzir seu próprio alimento por fotossíntese são chamados de:",
+ opts:["Consumidores primários","Consumidores secundários","Decompositores","Produtores","Predadores de topo"], correct:3,
+ exp:"Os produtores (como plantas e algas) realizam fotossíntese, convertendo luz solar em energia química e formando a base das cadeias alimentares."},
+{subj:"CI", q:"Segundo a 1ª Lei de Mendel (Lei da Segregação), durante a formação dos gametas:",
+ opts:["Os dois alelos de um gene permanecem sempre juntos no mesmo gameta","Os alelos de um mesmo gene se separam, e cada gameta recebe apenas um deles","Todos os gametas recebem obrigatoriamente o alelo dominante","Não há qualquer separação de material genético","Os gametas duplicam o número de cromossomos da célula original"], correct:1,
+ exp:"A Lei da Segregação afirma que os dois alelos de um gene se separam durante a formação dos gametas, de modo que cada gameta carrega apenas um deles."},
+{subj:"CI", q:"A principal função do sistema respiratório no corpo humano é:",
+ opts:["Transportar nutrientes para todas as células","Realizar as trocas gasosas, captando oxigênio e eliminando gás carbônico","Produzir hormônios que controlam o crescimento","Filtrar o sangue e produzir urina","Digerir os alimentos ingeridos"], correct:1,
+ exp:"O sistema respiratório é responsável pela hematose: a troca gasosa em que o oxigênio do ar entra no sangue e o gás carbônico é eliminado."},
+{subj:"CI", q:"O mecanismo pelo qual características mais vantajosas para a sobrevivência em um ambiente tendem a ser transmitidas com mais frequência às gerações seguintes é chamado de:",
+ opts:["Mutação neutra","Seleção natural","Deriva genética aleatória","Clonagem natural","Regressão evolutiva"], correct:1,
+ exp:"A seleção natural, proposta por Darwin, é o processo pelo qual indivíduos mais adaptados ao ambiente têm maior chance de sobreviver e deixar descendentes, transmitindo suas características."},
+{subj:"CI", q:"As diferentes fases da Lua (nova, crescente, cheia e minguante) ocorrem principalmente devido a:",
+ opts:["Mudanças no formato da Lua ao longo do mês","Variações na posição relativa entre Terra, Lua e Sol, que alteram a porção iluminada visível da Terra","Eclipses mensais do Sol","Mudanças na velocidade de rotação da Terra","Alterações na composição química da Lua"], correct:1,
+ exp:"As fases lunares resultam da posição da Lua em relação à Terra e ao Sol, que determina quanto da face iluminada da Lua conseguimos ver a partir da Terra."},
+{subj:"CI", q:"A energia associada ao movimento de um corpo, como um carrinho descendo uma rampa, é chamada de energia:",
+ opts:["Potencial gravitacional","Térmica","Cinética","Elástica","Química"], correct:2,
+ exp:"Energia cinética é a energia associada ao movimento: quanto maior a velocidade e a massa do corpo, maior sua energia cinética."},
+{subj:"CI", q:"Em um circuito elétrico em série, se uma das lâmpadas queimar:",
+ opts:["Apenas ela apaga, as demais continuam acesas normalmente","Todas as lâmpadas do circuito se apagam, pois o circuito é interrompido","O circuito passa a funcionar com mais intensidade","Nada acontece com o funcionamento do circuito","A corrente elétrica dobra de intensidade"], correct:1,
+ exp:"No circuito em série, há apenas um caminho para a corrente elétrica; se ele é interrompido em qualquer ponto (como uma lâmpada queimada), todo o circuito deixa de funcionar."},
+],
+};
+
 const subjNames = {LP:"Língua Portuguesa", MAT:"Matemática", GH:"Geografia e História", CI:"Ciências"};
 const letters = ["A","B","C","D","E"];
 
-let current = 0;
-let answers = new Array(questions.length).fill(null); // selected option idx
-let confirmed = new Array(questions.length).fill(false);
-
-function startQuiz(){
-  document.getElementById('quiz-intro').style.display = 'none';
-  document.getElementById('quiz-body').style.display = 'block';
-  renderNavGrid();
-  renderQuestion();
-}
-
-function renderNavGrid(){
-  const grid = document.getElementById('nav-grid');
-  grid.innerHTML = questions.map((q,i) => {
-    let cls = 'nav-cell';
-    if(i === current) cls += ' current';
-    else if(confirmed[i]) cls += (answers[i] === questions[i].correct ? ' correct' : ' wrong');
-    return `<button class="${cls}" onclick="goTo(${i})">${i+1}</button>`;
-  }).join('');
-}
-
-function goTo(i){
-  current = i;
-  renderNavGrid();
-  renderQuestion();
-}
-
-function renderQuestion(){
-  const q = questions[current];
-  const card = document.getElementById('q-card');
-  const isConfirmed = confirmed[current];
-  card.innerHTML = `
-    <div class="q-meta"><span class="tag">${subjNames[q.subj]}</span><span>Questão ${current+1} de ${questions.length}</span></div>
-    <p class="q-text">${q.q}</p>
-    <div class="options" id="opts"></div>
-    <div class="explain" id="explain"><b>Comentário:</b> ${q.exp}</div>
-    <div class="q-actions">
-      <button class="btn" id="prev-btn" ${current===0?'disabled':''} onclick="goTo(${current-1})">← Anterior</button>
-      <div class="q-actions-right">
-        <button class="btn btn-primary" id="confirm-btn">Confirmar resposta</button>
-        <button class="btn" id="next-btn" ${current===questions.length-1?'disabled':''} onclick="goTo(${current+1})">Próxima →</button>
-      </div>
-    </div>
-  `;
-  const optsEl = document.getElementById('opts');
-  optsEl.innerHTML = q.opts.map((o,i) => {
-    let cls = 'option';
-    if(isConfirmed){
-      if(i === q.correct) cls += ' reveal-correct';
-      else if(i === answers[current]) cls += ' reveal-wrong';
-    } else if(answers[current] === i){
-      cls += ' selected';
-    }
-    return `<div class="${cls}" onclick="selectOpt(${i})"><span class="letter">${letters[i]}</span><span>${o}</span></div>`;
-  }).join('');
-
-  document.getElementById('explain').classList.toggle('show', isConfirmed);
-  const confirmBtn = document.getElementById('confirm-btn');
-  if(isConfirmed){
-    confirmBtn.textContent = 'Respondida ✓';
-    confirmBtn.disabled = true;
-  } else {
-    confirmBtn.disabled = answers[current] === null;
-    confirmBtn.onclick = () => confirmAnswer();
+/* ---------------- SHUFFLE HELPERS ---------------- */
+function shuffleArray(arr){
+  const a = arr.slice();
+  for(let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
   }
-  updateProgress();
+  return a;
+}
+function shuffleQuestion(q){
+  const idxs = shuffleArray(q.opts.map((_, i) => i));
+  return { ...q, opts: idxs.map(i => q.opts[i]), correct: idxs.indexOf(q.correct) };
+}
+function freshSet(bank){
+  return shuffleArray(bank).map(shuffleQuestion);
 }
 
-function selectOpt(i){
-  if(confirmed[current]) return;
-  answers[current] = i;
-  renderQuestion();
-}
+/* ---------------- GENERIC QUIZ ENGINE ---------------- */
+function makeQuizEngine(cfg){
+  const st = { questions: [], answers: [], confirmed: [], current: 0 };
 
-function confirmAnswer(){
-  if(answers[current] === null) return;
-  confirmed[current] = true;
-  renderNavGrid();
-  renderQuestion();
-}
+  function start(list){
+    st.questions = list;
+    st.answers = new Array(list.length).fill(null);
+    st.confirmed = new Array(list.length).fill(false);
+    st.current = 0;
+    document.getElementById(cfg.ids.intro).style.display = 'none';
+    document.getElementById(cfg.ids.results).style.display = 'none';
+    document.getElementById(cfg.ids.body).style.display = 'block';
+    renderNavGrid();
+    renderQuestion();
+  }
 
-function updateProgress(){
-  const answeredCount = confirmed.filter(Boolean).length;
-  document.getElementById('prog-text').textContent = `${answeredCount} / ${questions.length} respondidas`;
-  const pct = Math.round((answeredCount/questions.length)*100);
-  document.getElementById('prog-pct').textContent = pct + '%';
-  document.getElementById('prog-fill').style.width = pct + '%';
-}
+  function renderNavGrid(){
+    const grid = document.getElementById(cfg.ids.navGrid);
+    grid.innerHTML = st.questions.map((q, i) => {
+      let cls = 'nav-cell';
+      if(i === st.current) cls += ' current';
+      else if(st.confirmed[i]) cls += (st.answers[i] === q.correct ? ' correct' : ' wrong');
+      return `<button class="${cls}" onclick="${cfg.name}.goTo(${i})">${i + 1}</button>`;
+    }).join('');
+  }
 
-function finishQuiz(){
-  document.getElementById('quiz-body').style.display = 'none';
-  const resEl = document.getElementById('quiz-results');
-  resEl.style.display = 'block';
+  function goTo(i){ st.current = i; renderNavGrid(); renderQuestion(); }
 
-  const bySubj = {};
-  Object.keys(subjNames).forEach(k => bySubj[k] = {correct:0, total:0});
-  let totalCorrect = 0;
-  questions.forEach((q,i) => {
-    bySubj[q.subj].total++;
-    if(confirmed[i] && answers[i] === q.correct){
-      bySubj[q.subj].correct++;
-      totalCorrect++;
+  function renderQuestion(){
+    const q = st.questions[st.current];
+    const card = document.getElementById(cfg.ids.card);
+    const isConfirmed = st.confirmed[st.current];
+    const optsId = cfg.ids.card + '-opts';
+    const explainId = cfg.ids.card + '-explain';
+    const confirmId = cfg.ids.card + '-confirm';
+    card.innerHTML = `
+      <div class="q-meta"><span class="tag">${subjNames[q.subj]}</span><span>Questão ${st.current + 1} de ${st.questions.length}</span></div>
+      <p class="q-text">${q.q}</p>
+      <div class="options" id="${optsId}"></div>
+      <div class="explain" id="${explainId}"><b>Comentário:</b> ${q.exp}</div>
+      <div class="q-actions">
+        <button class="btn" ${st.current === 0 ? 'disabled' : ''} onclick="${cfg.name}.goTo(${st.current - 1})">← Anterior</button>
+        <div class="q-actions-right">
+          <button class="btn btn-primary" id="${confirmId}">Confirmar resposta</button>
+          <button class="btn" ${st.current === st.questions.length - 1 ? 'disabled' : ''} onclick="${cfg.name}.goTo(${st.current + 1})">Próxima →</button>
+        </div>
+      </div>
+    `;
+    const optsEl = document.getElementById(optsId);
+    optsEl.innerHTML = q.opts.map((o, i) => {
+      let cls = 'option';
+      if(isConfirmed){
+        if(i === q.correct) cls += ' reveal-correct';
+        else if(i === st.answers[st.current]) cls += ' reveal-wrong';
+      } else if(st.answers[st.current] === i){
+        cls += ' selected';
+      }
+      return `<div class="${cls}" onclick="${cfg.name}.selectOpt(${i})"><span class="letter">${letters[i]}</span><span>${o}</span></div>`;
+    }).join('');
+
+    document.getElementById(explainId).classList.toggle('show', isConfirmed);
+    const confirmBtn = document.getElementById(confirmId);
+    if(isConfirmed){
+      confirmBtn.textContent = 'Respondida ✓';
+      confirmBtn.disabled = true;
+    } else {
+      confirmBtn.disabled = st.answers[st.current] === null;
+      confirmBtn.onclick = () => confirmAnswer();
     }
-  });
-  const answeredCount = confirmed.filter(Boolean).length;
+    updateProgress();
+  }
 
-  resEl.innerHTML = `
-    <div class="results">
-      <p class="eyebrow" style="margin-bottom:2px;">Resultado</p>
-      <div class="score-big">${totalCorrect} / ${questions.length}</div>
-      <p style="color:var(--paper-dim); font-size:13.5px;">${answeredCount < questions.length ? (questions.length - answeredCount) + ' questão(ões) não respondida(s).' : 'Simulado completo!'}</p>
-      <div class="results-bars">
-        ${Object.entries(bySubj).map(([k,v]) => `
-          <div class="rbar-row">
-            <span>${subjNames[k]}</span>
-            <div class="rbar-track"><div class="rbar-fill" style="width:${(v.correct/v.total)*100}%"></div></div>
-            <span style="font-family:var(--font-mono); text-align:right;">${v.correct}/${v.total}</span>
-          </div>
-        `).join('')}
+  function selectOpt(i){
+    if(st.confirmed[st.current]) return;
+    st.answers[st.current] = i;
+    renderQuestion();
+  }
+
+  function confirmAnswer(){
+    if(st.answers[st.current] === null) return;
+    st.confirmed[st.current] = true;
+    renderNavGrid();
+    renderQuestion();
+  }
+
+  function updateProgress(){
+    const answeredCount = st.confirmed.filter(Boolean).length;
+    document.getElementById(cfg.ids.progText).textContent = `${answeredCount} / ${st.questions.length} respondidas`;
+    const pct = st.questions.length ? Math.round((answeredCount / st.questions.length) * 100) : 0;
+    document.getElementById(cfg.ids.progPct).textContent = pct + '%';
+    document.getElementById(cfg.ids.progFill).style.width = pct + '%';
+  }
+
+  function finish(){
+    document.getElementById(cfg.ids.body).style.display = 'none';
+    const resEl = document.getElementById(cfg.ids.results);
+    resEl.style.display = 'block';
+
+    const bySubj = {};
+    st.questions.forEach(q => { if(!bySubj[q.subj]) bySubj[q.subj] = { correct: 0, total: 0 }; });
+    let totalCorrect = 0;
+    st.questions.forEach((q, i) => {
+      bySubj[q.subj].total++;
+      if(st.confirmed[i] && st.answers[i] === q.correct){
+        bySubj[q.subj].correct++;
+        totalCorrect++;
+      }
+    });
+    const answeredCount = st.confirmed.filter(Boolean).length;
+
+    resEl.innerHTML = `
+      <div class="results">
+        <p class="eyebrow" style="margin-bottom:2px;">Resultado</p>
+        <div class="score-big">${totalCorrect} / ${st.questions.length}</div>
+        <p style="color:var(--paper-dim); font-size:13.5px;">${answeredCount < st.questions.length ? (st.questions.length - answeredCount) + ' questão(ões) não respondida(s).' : cfg.completeLabel}</p>
+        <div class="results-bars">
+          ${Object.entries(bySubj).map(([k, v]) => `
+            <div class="rbar-row">
+              <span>${subjNames[k]}</span>
+              <div class="rbar-track"><div class="rbar-fill" style="width:${(v.correct / v.total) * 100}%"></div></div>
+              <span style="font-family:var(--font-mono); text-align:right;">${v.correct}/${v.total}</span>
+            </div>
+          `).join('')}
+        </div>
+        <div class="q-actions" style="justify-content:center;">
+          <button class="btn" onclick="${cfg.name}.review()">Revisar questões</button>
+          <button class="btn btn-primary" onclick="${cfg.name}.retry()">${cfg.retryLabel}</button>
+          ${cfg.backLabel ? `<button class="btn" onclick="${cfg.name}.back()">${cfg.backLabel}</button>` : ''}
+        </div>
       </div>
-      <div class="q-actions" style="justify-content:center;">
-        <button class="btn" onclick="reviewQuiz()">Revisar questões</button>
-        <button class="btn btn-primary" onclick="restartQuiz()">Refazer simulado</button>
-      </div>
-    </div>
-  `;
+    `;
+  }
+
+  function review(){
+    document.getElementById(cfg.ids.results).style.display = 'none';
+    document.getElementById(cfg.ids.body).style.display = 'block';
+    goTo(0);
+  }
+
+  function retry(){
+    start(cfg.getRetryList());
+  }
+
+  function back(){
+    document.getElementById(cfg.ids.results).style.display = 'none';
+    document.getElementById(cfg.ids.body).style.display = 'none';
+    document.getElementById(cfg.ids.intro).style.display = 'block';
+  }
+
+  return { start, goTo, selectOpt, confirmAnswer, finish, review, retry, back };
 }
 
-function reviewQuiz(){
-  document.getElementById('quiz-results').style.display = 'none';
-  document.getElementById('quiz-body').style.display = 'block';
-  goTo(0);
+/* ---------------- SIMULADO instance ---------------- */
+const quizEngine = makeQuizEngine({
+  name: 'quizEngine',
+  ids: { intro:'quiz-intro', body:'quiz-body', results:'quiz-results', navGrid:'nav-grid', card:'q-card', progText:'prog-text', progPct:'prog-pct', progFill:'prog-fill' },
+  completeLabel: 'Simulado completo!',
+  retryLabel: 'Refazer simulado',
+  getRetryList: () => freshSet(simuladoBank),
+});
+document.getElementById('start-quiz').addEventListener('click', () => quizEngine.start(freshSet(simuladoBank)));
+document.getElementById('finish-btn').addEventListener('click', () => quizEngine.finish());
+
+/* ---------------- EXERCÍCIOS instance ---------------- */
+let exSelected = new Set();
+
+function renderSubjPicker(){
+  const el = document.getElementById('subj-pills');
+  el.innerHTML = Object.keys(subjNames).map(k => `
+    <button class="subj-pill" data-k="${k}" onclick="toggleSubjPick('${k}')">
+      <span class="subject-tag">${k}</span>${subjNames[k]}<span class="count">10 questões</span>
+    </button>
+  `).join('');
+}
+function toggleSubjPick(k){
+  if(exSelected.has(k)) exSelected.delete(k); else exSelected.add(k);
+  document.querySelectorAll('.subj-pill').forEach(b => b.classList.toggle('selected', exSelected.has(b.dataset.k)));
+  document.getElementById('start-ex').disabled = exSelected.size === 0;
+}
+function buildExerciseList(){
+  let pool = [];
+  exSelected.forEach(k => { pool = pool.concat(exerciseBank[k]); });
+  return freshSet(pool);
 }
 
-function restartQuiz(){
-  answers = new Array(questions.length).fill(null);
-  confirmed = new Array(questions.length).fill(false);
-  current = 0;
-  document.getElementById('quiz-results').style.display = 'none';
-  document.getElementById('quiz-intro').style.display = 'block';
-}
-
-document.getElementById('start-quiz').addEventListener('click', startQuiz);
-document.getElementById('finish-btn').addEventListener('click', finishQuiz);
+const exEngine = makeQuizEngine({
+  name: 'exEngine',
+  ids: { intro:'ex-picker', body:'ex-body', results:'ex-results', navGrid:'ex-nav-grid', card:'ex-q-card', progText:'ex-prog-text', progPct:'ex-prog-pct', progFill:'ex-prog-fill' },
+  completeLabel: 'Lista de exercícios completa!',
+  retryLabel: 'Refazer com as mesmas matérias',
+  backLabel: 'Escolher outras matérias',
+  getRetryList: buildExerciseList,
+});
+document.getElementById('start-ex').addEventListener('click', () => {
+  if(exSelected.size === 0) return;
+  exEngine.start(buildExerciseList());
+});
+document.getElementById('ex-finish-btn').addEventListener('click', () => exEngine.finish());
+renderSubjPicker();
 
 /* ---------------- TABS ---------------- */
 document.querySelectorAll('.tab-btn').forEach(btn => {
